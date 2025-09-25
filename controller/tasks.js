@@ -2,7 +2,7 @@ const { customError } = require("../errors/custom-error");
 const asyncWrapper = require("../middleware/async");
 const Task = require("../models/task");
 
-const getAllTasks = asyncWrapper(async (req, res) => {
+const getAllTasks = asyncWrapper(async (req, res, next) => {
   const tasks = await Task.find({});
   res.status(200).json({ tasks });
 });
@@ -19,7 +19,7 @@ const getTask = asyncWrapper(async (req, res, next) => {
 });
 
 const createTask = asyncWrapper(async (req, res) => {
-  const task = Task.create(req.body);
+  const task = await Task.create(req.body);
   // const newTask = await task;
   res.status(201).json(task);
 });
