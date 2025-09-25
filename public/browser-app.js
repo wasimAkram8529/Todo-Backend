@@ -38,9 +38,10 @@ const showTasks = async () => {
       })
       .join("");
     tasksDOM.innerHTML = allTasks;
-  } catch (error) {
+  } catch (err) {
     tasksDOM.innerHTML =
       '<h5 class="empty-list">There was an error, please try later....</h5>';
+      console.log(err)
   }
   loadingDOM.style.visibility = "hidden";
 };
@@ -80,6 +81,7 @@ formDOM.addEventListener("submit", async (e) => {
   } catch (error) {
     formAlertDOM.style.display = "block";
     formAlertDOM.innerHTML = `error, please try again`;
+    console.log(error)
   }
   setTimeout(() => {
     formAlertDOM.style.display = "none";
