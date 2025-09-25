@@ -1,0 +1,33 @@
+name: "Todo Backend CI workflow"
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+    types:
+      - opened
+      - closed
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'Push'
+    steps:
+      - name: checkout repo
+        uses: actions/checkout@v4
+
+      - name: setup node environment
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22.0
+          cache: npm
+
+      - name: install dependency
+        run: npm ci
+
+      - name: run test
+        run: npm test
+        
