@@ -61,7 +61,7 @@
       meta: refresh_inventory
 
 - 
-  hosts: tag_Name_Ansible
+  hosts: tag_Ansible
   gather_facts: false
 
   tasks:
@@ -71,7 +71,7 @@
         timeout: 320
 
 - name: Install Required packages
-  hosts: tag_Name_Ansible
+  hosts: tag_Ansible
   gather_facts: false
 
   tasks:
@@ -85,12 +85,13 @@
         state: present
 
 - name: Copy Backend code to ec2 instance
+  hosts: tag_Ansible
   gather_facts: false
 
   tasks:
     - name: Copy backend code
       synchronize:
-        src: ../
+        src:  /home/runner/work/Todo-Backend/Todo-Backend
         dest: /home/ubuntu/todo-backend
         rsync_opts:
           - "--exclude=.git"
@@ -106,8 +107,9 @@
       args:
         chdir: /home/ubuntu/todo-backend
 
-    - name: Start backend
-      command: npm start
+    - name: Start backend as background process
+      shell: |
+        nohup npm start > backend.log 2>&1 &
       args:
         chdir: /home/ubuntu/todo-backend
 ...
