@@ -23,7 +23,7 @@
             to_port: 443
             cidr_ip: 0.0.0.0/0
 
-          - porot: tcp
+          - proto: tcp
             from_port: 5000
             to_port: 5000
             cidr_ip: 0.0.0.0/0
