@@ -1,10 +1,10 @@
 name: CD Pipeline for deploying backend on aws using ansible
 
 on:
-  workflow_run:
-    workflows: ["Todo Backend CI workflow"]
-    types:
-      - completed
+  # workflow_run:
+  #   workflows: ["Todo Backend CI workflow"]
+  #   types:
+  #     - completed
   workflow_dispatch:
 
 jobs:
@@ -22,10 +22,6 @@ jobs:
         uses: actions/setup-python@v4
         with:
           python-version: "3.x"
-
-      - name: Update pip
-        run: |
-          python -m pip install --update pip
 
       - name: Set up SSH key
         run: |
