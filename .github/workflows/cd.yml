@@ -31,7 +31,7 @@ jobs:
 
       - name: Install boto boto3 botocore Ansible
         run: |
-          pip install ansible boto3 botocore amazon.aws
+          pip install ansible boto3 botocore
 
       - name: Run playbook
         run: |
