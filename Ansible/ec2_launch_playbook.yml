@@ -91,7 +91,7 @@
   tasks:
     - name: Copy backend code
       synchronize:
-        src:  /home/runner/work/Todo-Backend/Todo-Backend
+        src:  /home/runner/work/Todo-Backend/Todo-Backend/
         dest: /home/ubuntu/todo-backend
         rsync_opts:
           - "--exclude=.git"
