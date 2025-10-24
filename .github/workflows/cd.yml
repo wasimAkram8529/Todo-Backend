@@ -36,6 +36,6 @@ jobs:
       - name: Run playbook
         run: |
            cd Ansible
-           ansible-playbook ./Ansible/ec2_launch_playbook.yml
+           ansible-playbook ec2_launch_playbook.yml
 
       
