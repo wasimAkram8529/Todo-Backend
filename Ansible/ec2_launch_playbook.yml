@@ -1,0 +1,113 @@
+---
+- 
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  vars:
+    desired_instances: 1
+
+  tasks:
+    - name: Create security group for ssh, http
+      ec2_group:
+        name: Ansible
+        description: Ansible security group
+        region: us-east-1
+        rules:
+          - proto: tcp
+            from_port: 22
+            to_port: 22
+            cidr_ip: 0.0.0.0/0
+
+          - proto: tcp
+            from_port: 443
+            to_port: 443
+            cidr_ip: 0.0.0.0/0
+
+          - porot: tcp
+            from_port: 5000
+            to_port: 5000
+            cidr_ip: 0.0.0.0/0
+
+          - proto: tcp
+            from_port: 3000
+            to_port: 3000
+            cidr_ip: 0.0.0.0/0
+
+    - name: Get Info of EC2 Instance    
+      ec2_instance_info:
+        filters:
+          "tag:Name": Ansible
+          instance-state-name: running
+        region: us-east-1
+      register: ec2_info 
+
+    - name: Set facts 
+      set_fact:
+        instance_to_launch: "{{ [0, desired_instances - (ec2_info.instances | length)] | max }}"
+
+    - name: Launch instances
+      ec2_instance:
+        name: Ansible
+        instance_type: t2.micro
+        security_group: Ansible
+        key_name: Ansible_key
+        image_id: ami-0360c520857e3138f
+        region: us-east-1
+        wait: true
+        count: "{{ instance_to_launch }}" 
+      register: ec2
+
+    - name: Refresh inventory
+      meta: refresh_inventory
+
+- 
+  hosts: tag_Name_Ansible
+  gather_facts: false
+
+  tasks:
+    - name: Wait for ssh to be online
+      wait_for_connection:
+        delay: 10
+        timeout: 320
+
+- name: Install Required packages
+  hosts: tag_Name_Ansible
+  gather_facts: false
+
+  tasks:
+    - name: Update cache
+      apt:
+        update_cache: yes
+
+    - name: Install node js
+      apt:
+        name: [nodejs, npm]
+        state: present
+
+- name: Copy Backend code to ec2 instance
+  gather_facts: false
+
+  tasks:
+    - name: Copy backend code
+      synchronize:
+        src: ../
+        dest: /home/ubuntu/todo-backend
+        rsync_opts:
+          - "--exclude=.git"
+          - "--exclude=.github"
+          - "--exclude=__tests__"
+          - "--exclude=integration"
+          - "--exclude=node_modules"
+          - "--exclude=Ansible"
+          - "--exclude=README.md"
+
+    - name: Install dependencies
+      command: npm install
+      args:
+        chdir: /home/ubuntu/todo-backend
+
+    - name: Start backend
+      command: npm start
+      args:
+        chdir: /home/ubuntu/todo-backend
+...

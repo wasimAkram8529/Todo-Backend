@@ -1,0 +1,7 @@
+pluggin: amazon.aws.aws_ec2
+regions:
+ - us-east-1
+cache: false
+keyed_groups:
+  - prefix: tag
+    key: tags
