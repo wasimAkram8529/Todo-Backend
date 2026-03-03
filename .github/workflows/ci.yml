@@ -4,17 +4,17 @@ on:
   push:
     branches:
       - main
+      - develop
   pull_request:
     branches:
       - main
+      - develop
     types:
       - opened
-      - closed
 
 jobs:
   build:
     runs-on: ubuntu-latest
-    if: github.event_name == 'Push'
     steps:
       - name: checkout repo
         uses: actions/checkout@v4
@@ -33,4 +33,3 @@ jobs:
 
       - name: run lint
         run: npm run lint
-        

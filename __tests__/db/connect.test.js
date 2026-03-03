@@ -9,11 +9,13 @@ describe("Test suit to check mongoose connect", () => {
     mongoServer = await MongoMemoryServer.create()
     const URI = mongoServer.getUri()
     await connectDatabase(URI)
-  })
+  }, 30000)
 
   afterAll(async () => {
     await mongoose.disconnect()
-    await mongoServer.stop()
+    if (mongoServer) {
+      await mongoServer.stop();
+    }
   })
 
   test("Mongoose should be connected", async () => {
