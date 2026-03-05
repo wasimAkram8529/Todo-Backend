@@ -35,9 +35,11 @@ jobs:
         run: npm run lint
 
   build-docker-image:
-    if: github.ref == 'refs/heads/develop'
+    if: github.event_name == 'push' && github.ref == 'refs/heads/develop'
     needs: build-and-test
     runs-on: ubuntu-latest
+    environment:
+      name: production
 
     steps:
       - name: Checkout code

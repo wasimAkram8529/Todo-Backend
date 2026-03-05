@@ -1,2 +1,8 @@
-/node_modules
+node_modules/
 .env
+infra/terraform-backend/
+infra/terraform/.terraform/
+infra/terraform/*.tfvars
+infra/terraform/*..auto.tfvars
+infra/terraform/terraform.tfstate
+infra/terraform/terraform.tfstate.backup
