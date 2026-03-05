@@ -35,17 +35,17 @@
 
     - name: Loging to docker hub
       community.docker.docker_login:
-        username: "{{ USERNAME }}"
-        password: "{{ DOCKER_PASSWORD }}"
+        username: "{{ lookup('env', 'USERNAME') }}"
+        password: "{{ lookup('env', 'DOCKER_PASSWORD') }}"
 
     - name: Start docker container
       docker_container:
         name: todo-backend
-        image: "{{ USERNAME }}/todo-backend:staging-latest"
+        image: "{{ lookup('env', 'USERNAME') }}/todo-backend:staging-latest"
         state: started
         ports:
           - "5000:5000"
         env:
-          MONGO_URI: "{{ MONGO_URI }}"
-          PORT: "{{ PORT }}"
+          MONGO_URI: "{{ lookup('env', 'MONGO_URI') }}"
+          PORT: "{{ lookup('env', 'PORT') }}"
     
