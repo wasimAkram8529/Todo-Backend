@@ -9,7 +9,7 @@ on:
 
 jobs:
   create-aws-infrastructure:
-    if: github.event_name == 'push' && (github.ref == 'refs/heads/develop' || github.ref == 'refs/heads/main')
+    if: github.ref == 'refs/heads/develop' || github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     environment:
       name: production
@@ -46,7 +46,7 @@ jobs:
           path: infra/terraform/tfplan
 
   terraform-apply:
-    if: github.event_name == 'push' && (github.ref == 'refs/heads/develop' || github.ref == 'refs/heads/main')
+    if: github.ref == 'refs/heads/develop' || github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     needs: create-aws-infrastructure
     environment:
@@ -81,7 +81,7 @@ jobs:
         working-directory: infra/terraform
 
   Ansible-run:
-    if: github.event_name == 'push' && (github.ref == 'refs/heads/develop' || github.ref == 'refs/heads/main')
+    if: github.ref == 'refs/heads/develop' || github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     environment:
       name: production
