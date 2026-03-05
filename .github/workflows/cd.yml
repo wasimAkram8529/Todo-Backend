@@ -102,7 +102,7 @@ jobs:
     env:
       AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
       AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-      ANSIBLE_USER: ${{ secrets.ANSIBLE_USER }}
+      ANSIBLE_REMOTE_USER: ${{ secrets.ANSIBLE_REMOTE_USER }}
       USERNAME: ${{ secrets.DOCKER_USERNAME }}
       DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
       MONGO_URI: ${{ secrets.MONGO_URI }}
