@@ -5,8 +5,5 @@ resource "aws_instance" "tf-backend-ec2" {
   subnet_id = var.subnet_id
   vpc_security_group_ids = [var.tf-backend-sg-id]
 
-  tags = {
-    Name = "tf-backend-instance"
-    env = "stagging"
-  }
+  tags = var.tags
 }

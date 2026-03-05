@@ -1,5 +1,7 @@
 node_modules/
 .env
+infra/ansible/ec2_launch_playbook.yml
+infra/ansible/test.yml
 infra/terraform-backend/
 infra/terraform/.terraform/
 infra/terraform/*.tfvars
