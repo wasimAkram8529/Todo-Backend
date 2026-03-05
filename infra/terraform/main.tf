@@ -17,7 +17,9 @@ module "tf-backend-sg" {
 }
 
 module "tf-backend-instance" {
+  count = 2
   source = "./modules/instances"
   subnet_id = module.tf-vpc.tf-subnet-id[0]
   tf-backend-sg-id = module.tf-backend-sg.tf-backend-sg-id
+  tags = var.tags[count.index]
 }
