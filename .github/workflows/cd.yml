@@ -40,6 +40,7 @@ jobs:
 
       - name: Generate tfplan file for review
         run: terraform plan -out tfplan
+        working-directory: infra/terraform
 
       - name: Terraform Plan (Readable)
         run: terraform show -no-color tfplan
