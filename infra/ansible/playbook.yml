@@ -6,40 +6,45 @@
 
   tasks:
     - name: Install required dependency
-      package:
+      ansible.builtin.package:
         name:
           - apt-transport-https
           - ca-certificates
           - curl
           - gnupg
         state: present
-        update_cache: yes
+        update_cache: true
 
     - name: Install docker engine
-      package:
+      ansible.builtin.package:
         name:
           - docker.io
         state: present
 
     - name: Manage docker services
-      systemd:
+      ansible.builtin.systemd:
         name: docker
         state: started
-        enabled: yes
+        enabled: true
 
     - name: Add user to docker group
-      user:
+      ansible.builtin.user:
         name: "{{ ansible_user | default(ansible_env.USER) }}"
         groups: docker
-        append: yes
+        append: true
 
     - name: Loging to docker hub
       community.docker.docker_login:
         username: "{{ lookup('env', 'USERNAME') }}"
         password: "{{ lookup('env', 'DOCKER_PASSWORD') }}"
 
+    - name: Ensure old staging image is absent
+      community.docker.docker_image:
+        name: "{{ lookup('env', 'USERNAME') }}/todo-backend:staging-latest"
+        state: absent
+
     - name: Start docker container
-      docker_container:
+      community.docker.docker_container:
         name: todo-backend
         image: "{{ lookup('env', 'USERNAME') }}/todo-backend:staging-latest"
         state: started
@@ -48,4 +53,3 @@
         env:
           MONGO_URI: "{{ lookup('env', 'MONGO_URI') }}"
           PORT: "{{ lookup('env', 'PORT') }}"
-    

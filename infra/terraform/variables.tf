@@ -5,12 +5,9 @@ variable "aws-region" {
 }
 
 variable "tags" {
-  type = list(map(string))
-  default = [ {
+  type = map(string)
+  default = {
     "Name" = "tf-backend-instance"
     "env"  = "staging"
-  },{
-    "Name" = "tf-frontend-instance"
-    "env"  = "staging"
-  } ]
+  }
 }
