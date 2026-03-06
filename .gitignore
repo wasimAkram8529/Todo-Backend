@@ -8,3 +8,4 @@ infra/terraform/*.tfvars
 infra/terraform/*..auto.tfvars
 infra/terraform/terraform.tfstate
 infra/terraform/terraform.tfstate.backup
+

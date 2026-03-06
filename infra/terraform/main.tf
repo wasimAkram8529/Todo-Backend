@@ -1,25 +1,34 @@
-terraform {
-  backend "s3" {
-  }
-}
+# terraform {
+#   backend "s3" {
+#   }
+# }
 
 provider "aws" {
   region = var.aws-region
 }
 
-module "tf-vpc" {
-  source = "./modules/vpc"
+data "aws_vpcs" "vpcs" {
 }
+
+data "aws_subnet" "public-subnet-A" {
+  filter {
+    name   = "tag:Name"
+    values = ["PublicSubnetA"]
+  }
+}
+
+# module "tf-vpc" {
+#   source = "./modules/vpc"
+# }
 
 module "tf-backend-sg" {
   source = "./modules/sg"
-  tf-vpc-id = module.tf-vpc.tf-vpc-id
+  tf-vpc-id = data.aws_vpcs.vpcs.ids[0]
 }
 
 module "tf-backend-instance" {
-  count = 2
   source = "./modules/instances"
-  subnet_id = module.tf-vpc.tf-subnet-id[0]
+  subnet_id = data.aws_subnet.public-subnet-A.id
   tf-backend-sg-id = module.tf-backend-sg.tf-backend-sg-id
-  tags = var.tags[count.index]
+  tags = var.tags
 }
